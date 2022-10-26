@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Stacking : MonoBehaviour
 {
-    private Rigidbody playerRigidbody;
+    private Rigidbody PlayerRigidbody;
     private float xMove;
     private float zMove;
-    private Vector3 firsthandcuffPos;
-    private Vector3 currenthandcuffPos;
+    private Vector3 FirsthandcuffPos;
+    private Vector3 CurrenthandcuffPos;
     //
     [SerializeField] private float speed;
     //
@@ -17,7 +17,7 @@ public class Stacking : MonoBehaviour
 
     private void Awake()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
+        PlayerRigidbody = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -26,7 +26,7 @@ public class Stacking : MonoBehaviour
         zMove = Input.GetAxis("Vertical");
         Vector3 forwardMove = Vector3.forward * zMove * speed * Time.deltaTime;
         Vector3 horizontalMove = Vector3.right * xMove * speed * Time.deltaTime;
-        playerRigidbody.MovePosition(transform.position + forwardMove + horizontalMove);
+        PlayerRigidbody.MovePosition(transform.position + forwardMove + horizontalMove);
     }
 
 
@@ -37,16 +37,16 @@ public class Stacking : MonoBehaviour
             handcuffList.Add(other.gameObject);
             if (handcuffList.Count == 1)
             {
-                firsthandcuffPos = GetComponent<MeshRenderer>().bounds.max;
-                currenthandcuffPos = new Vector3(other.transform.position.x, firsthandcuffPos.y, other.transform.position.z);
-                other.gameObject.transform.position = currenthandcuffPos;
-                currenthandcuffPos = new Vector3(other.transform.position.x, transform.position.y + 0.3f, other.transform.position.z);
+                FirsthandcuffPos = GetComponent<MeshRenderer>().bounds.max;
+                CurrenthandcuffPos = new Vector3(other.transform.position.x, FirsthandcuffPos.y, other.transform.position.z);
+                other.gameObject.transform.position = CurrenthandcuffPos;
+                CurrenthandcuffPos = new Vector3(other.transform.position.x, transform.position.y + 0.3f, other.transform.position.z);
                 other.gameObject.GetComponent<HandcuffManager>().UpdateCubePosition(transform, true);
             }
             else if (handcuffList.Count > 1)
             {
-                other.gameObject.transform.position = currenthandcuffPos;
-                currenthandcuffPos = new Vector3(other.transform.position.x, other.gameObject.transform.position.y + 0.3f, other.transform.position.z);
+                other.gameObject.transform.position = CurrenthandcuffPos;
+                CurrenthandcuffPos = new Vector3(other.transform.position.x, other.gameObject.transform.position.y + 0.3f, other.transform.position.z);
                 other.gameObject.GetComponent<HandcuffManager>().UpdateCubePosition(handcuffList[handcuffListIndexCounter].transform, true);
                 handcuffListIndexCounter++;
             }
